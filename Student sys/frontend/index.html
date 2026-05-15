@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complaint System — Home</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ===== HOME PAGE SPECIFIC ===== */
+    main { flex: 1; }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #1E1B4B 0%, #312E81 40%, #1E40AF 70%, #0891B2 100%);
+      color: white;
+      padding: 7rem 2rem 6rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+    }
+    .hero-bg-circle.c1 { width: 500px; height: 500px; top: -200px; right: -150px; }
+    .hero-bg-circle.c2 { width: 350px; height: 350px; bottom: -150px; left: -100px; }
+    .hero-bg-circle.c3 { width: 200px; height: 200px; top: 50%; left: 45%; transform: translate(-50%,-50%); }
+    .hero-content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 0.35rem 1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 1.75rem;
+      backdrop-filter: blur(8px);
+    }
+    .hero-pill span { display: inline-block; width: 6px; height: 6px; background: #34D399; border-radius: 50%; }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 .highlight {
+      background: linear-gradient(90deg, #93C5FD, #67E8F9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      opacity: 0.85;
+      margin-bottom: 2.5rem;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .hero-actions .btn-light {
+      background: rgba(255,255,255,0.15);
+      color: white;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(8px);
+    }
+    .hero-actions .btn-light:hover {
+      background: rgba(255,255,255,0.25);
+      transform: translateY(-2px);
+    }
+    .hero-white-btn {
+      background: white;
+      color: var(--primary);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .hero-white-btn:hover {
+      background: #EEF2FF;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.25);
+    }
+
+    /* Stats strip */
+    .stats-strip {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .stats-grid {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      text-align: center;
+      gap: 1rem;
+    }
+    .stat-item h3 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1;
+    }
+    .stat-item p { font-size: 0.85rem; color: var(--text-light); margin-top: 4px; }
+    .stat-divider { border: none; border-right: 1px solid var(--border); }
+
+    /* Features */
+    .features-section { padding: 6rem 2rem; }
+    .section-tag {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.3rem 0.9rem;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.25rem);
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    .section-sub { color: var(--text-light); font-size: 1rem; max-width: 500px; margin: 0 auto 3.5rem; }
+    .features-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.75rem;
+    }
+    .feature-card {
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--feat-grad);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+    .feature-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.25rem;
+      background: var(--feat-bg);
+    }
+    .feat-blue  { --feat-grad: linear-gradient(90deg, var(--primary), #818CF8); --feat-bg: #EEF2FF; }
+    .feat-cyan  { --feat-grad: linear-gradient(90deg, var(--secondary), #67E8F9); --feat-bg: #ECFEFF; }
+    .feat-green { --feat-grad: linear-gradient(90deg, #10B981, #34D399); --feat-bg: #ECFDF5; }
+    .feature-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .feature-card p { color: var(--text-light); font-size: 0.93rem; line-height: 1.7; }
+    .feature-list { margin-top: 1rem; padding-left: 0; }
+    .feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      color: var(--text-light);
+      margin-bottom: 0.4rem;
+    }
+    .feature-list li::before {
+      content: '✓';
+      color: var(--primary);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* How it works */
+    .how-section {
+      background: linear-gradient(135deg, #F0F4FF 0%, #F0FDFF 100%);
+      padding: 6rem 2rem;
+    }
+    .steps-grid {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      position: relative;
+    }
+    .step-card {
+      text-align: center;
+      padding: 2rem 1.5rem;
+    }
+    .step-num {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin: 0 auto 1.25rem;
+      box-shadow: 0 6px 20px rgba(79,70,229,0.30);
+    }
+    .step-card h4 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+    }
+    .step-card p { font-size: 0.88rem; color: var(--text-light); }
+
+    /* CTA */
+    .cta-section {
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+    .cta-box {
+      max-width: 680px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, var(--primary), #6366F1);
+      border-radius: 24px;
+      padding: 4rem 3rem;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(79,70,229,0.35);
+    }
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 50%;
+      top: -100px; right: -100px;
+    }
+    .cta-box h2 {
+      font-family: var(--font-display);
+      font-size: 1.9rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      position: relative;
+    }
+    .cta-box p { opacity: 0.85; margin-bottom: 2rem; position: relative; }
+    .cta-box .btn {
+      background: white;
+      color: var(--primary);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    .cta-box .btn:hover { background: #EEF2FF; transform: translateY(-2px); }
+
+    @media (max-width: 640px) {
+      .hero { padding: 5rem 1.5rem 4.5rem; }
+      .stats-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+      .stat-divider { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; }
+      .features-section, .how-section, .cta-section { padding: 4rem 1.5rem; }
+      .cta-box { padding: 3rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">📋</div>
+      Complaint System
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="complaint.html">Submit Complaint</a></li>
+      <li><a href="admin.html" class="btn-nav">Admin Panel</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleNav()" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg-circle c1"></div>
+    <div class="hero-bg-circle c2"></div>
+    <div class="hero-bg-circle c3"></div>
+    <div class="hero-content">
+      <div class="hero-pill"><span></span> University Portal — Active</div>
+      <h1>Student <span class="highlight">Complaint</span><br>Management System</h1>
+      <p>Submit and track your complaints بسهولة — fast, transparent, and always in your hands.</p>
+      <div class="hero-actions">
+        <a href="complaint.html" class="btn hero-white-btn">
+          📝 Submit a Complaint
+        </a>
+        <a href="admin.html" class="btn btn-light">
+          🔐 Admin Panel
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats-strip">
+    <div class="stats-grid">
+      <div class="stat-item stat-divider">
+        <h3>1,240+</h3>
+        <p>Complaints Resolved</p>
+      </div>
+      <div class="stat-item stat-divider">
+        <h3>48h</h3>
+        <p>Average Response Time</p>
+      </div>
+      <div class="stat-item">
+        <h3>98%</h3>
+        <p>Student Satisfaction</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section class="features-section">
+    <div class="container text-center">
+      <span class="section-tag">✦ Why Choose Us</span>
+      <h2 class="section-title">Everything you need to resolve issues fast</h2>
+      <p class="section-sub">A streamlined platform built for students, managed by administration.</p>
+      <div class="features-grid">
+        <div class="card feature-card feat-blue">
+          <div class="feature-icon">🚀</div>
+          <h3>Easy Submission</h3>
+          <p>Submit your complaint in under 2 minutes with our intuitive form — no paperwork, no hassle.</p>
+          <ul class="feature-list">
+            <li>Categorized complaint types</li>
+            <li>Smart dynamic dropdowns</li>
+            <li>Instant confirmation</li>
+          </ul>
+        </div>
+        <div class="card feature-card feat-cyan">
+          <div class="feature-icon">📊</div>
+          <h3>Track Status</h3>
+          <p>Monitor the real-time progress of every complaint from submission to resolution, anytime.</p>
+          <ul class="feature-list">
+            <li>Pending → In Progress → Resolved</li>
+            <li>Admin action logs</li>
+            <li>Transparent updates</li>
+          </ul>
+        </div>
+        <div class="card feature-card feat-green">
+          <div class="feature-icon">⚡</div>
+          <h3>Quick Response</h3>
+          <p>Our administration is notified instantly and committed to responding within 48 hours.</p>
+          <ul class="feature-list">
+            <li>Priority-based routing</li>
+            <li>Direct department assignment</li>
+            <li>SLA-guaranteed responses</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="how-section">
+    <div class="container text-center">
+      <span class="section-tag">✦ How It Works</span>
+      <h2 class="section-title">Three simple steps</h2>
+      <p class="section-sub mb-3" style="margin-bottom:3rem">Get your issue heard and resolved in no time.</p>
+      <div class="steps-grid">
+        <div class="step-card card">
+          <div class="step-num">1</div>
+          <h4>Fill the Form</h4>
+          <p>Enter your details, choose a category, and describe your complaint clearly.</p>
+        </div>
+        <div class="step-card card">
+          <div class="step-num">2</div>
+          <h4>Review by Admin</h4>
+          <p>Administration reviews your complaint and assigns it to the right department.</p>
+        </div>
+        <div class="step-card card">
+          <div class="step-num">3</div>
+          <h4>Get Resolution</h4>
+          <p>Receive a resolution and track the outcome directly through the portal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-box">
+      <h2>Ready to raise your concern?</h2>
+      <p>Your voice matters. Submit a complaint today and get the support you deserve.</p>
+      <a href="complaint.html" class="btn">📝 Submit Complaint Now</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p><strong>Student Complaint Management System</strong> &copy; 2025 — University Administration Portal</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

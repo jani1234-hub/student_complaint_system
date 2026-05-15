@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit Complaint — Complaint System</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    main { flex: 1; }
+
+    .complaint-wrapper {
+      padding: 3rem 1.5rem 5rem;
+      display: flex;
+      justify-content: center;
+    }
+    .complaint-card {
+      width: min(640px, 100%);
+      padding: 0;
+      overflow: hidden;
+    }
+    .form-header {
+      padding: 2rem 2.5rem 1.75rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, #F5F3FF, #EEF2FF);
+    }
+    .form-header-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 0.5rem;
+    }
+    .form-header-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: white;
+      flex-shrink: 0;
+    }
+    .form-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .form-header p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      padding-left: 62px;
+    }
+    .form-body { padding: 2.25rem 2.5rem; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .char-count {
+      text-align: right;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .submit-btn-wrap {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+    }
+    .submit-btn-wrap .btn { flex: 1; justify-content: center; padding: 0.85rem; font-size: 1rem; }
+
+    /* Success State */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+    .success-screen.show { display: block; }
+    .success-icon-wrap {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #10B981, #34D399);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 8px 24px rgba(16,185,129,0.30);
+      animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes popIn {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .success-screen h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+    .success-screen p { color: var(--text-light); font-size: 0.95rem; margin-bottom: 2rem; }
+    .success-details {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+    .success-details dl { display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 1.5rem; }
+    .success-details dt { font-size: 0.82rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
+    .success-details dd { font-size: 0.92rem; font-weight: 500; color: var(--text); }
+    .success-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* Tooltip for category */
+    .field-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .form-body { padding: 1.75rem 1.5rem; }
+      .form-header { padding: 1.5rem 1.5rem; }
+      .form-header p { padding-left: 0; margin-top: 0.35rem; }
+      .complaint-wrapper { padding: 2rem 1rem 4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">📋</div>
+      Complaint System
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="complaint.html" class="active">Submit Complaint</a></li>
+      <li><a href="admin.html" class="btn-nav">Admin Panel</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleNav()" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <h1>📝 Submit a Complaint</h1>
+  <p>Fill out the form below — we'll review your complaint within 48 hours</p>
+</div>
+
+<!-- MAIN CONTENT -->
+<main>
+  <div class="complaint-wrapper">
+    <div class="card complaint-card">
+
+      <!-- FORM -->
+      <div id="formSection">
+        <div class="form-header">
+          <div class="form-header-top">
+            <div class="form-header-icon">📋</div>
+            <h2>Complaint Details</h2>
+          </div>
+          <p>All fields marked with <strong>*</strong> are required</p>
+        </div>
+
+        <form class="form-body" id="complaintForm" novalidate>
+          <div id="formAlert"></div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="name">Full Name <span class="req">*</span></label>
+              <input type="text" class="form-control" id="name" placeholder="e.g. Ahmed Khan" />
+              <span class="err-msg" id="nameErr">Please enter your full name.</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="email">Email Address <span class="req">*</span></label>
+              <input type="email" class="form-control" id="email" placeholder="student@university.edu" />
+              <span class="err-msg" id="emailErr">Please enter a valid email address.</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="category">Complaint Category <span class="req">*</span></label>
+              <select class="form-control" id="category" onchange="updateTargets()">
+                <option value="">— Select Category —</option>
+                <option value="Department">Department</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Administration">Administration</option>
+                <option value="Hostel">Hostel</option>
+              </select>
+              <span class="err-msg" id="categoryErr">Please select a category.</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="target">Target / Against <span class="req">*</span></label>
+              <select class="form-control" id="target" disabled>
+                <option value="">— Select Category First —</option>
+              </select>
+              <span class="err-msg" id="targetErr">Please select a target.</span>
+              <p class="field-hint" id="targetHint">ℹ️ Select a category to see available options</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="rollno">Roll Number <span class="req">*</span></label>
+            <input type="text" class="form-control" id="rollno" placeholder="e.g. CS-2021-005" />
+            <span class="err-msg" id="rollnoErr">Please enter your roll number.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="subject">Complaint Subject <span class="req">*</span></label>
+            <input type="text" class="form-control" id="subject" placeholder="Brief subject of your complaint" />
+            <span class="err-msg" id="subjectErr">Please enter a subject.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="complaint">Complaint Details <span class="req">*</span></label>
+            <textarea class="form-control" id="complaint" placeholder="Describe your complaint in detail — include dates, names, and any relevant context..." maxlength="1000" oninput="updateCharCount()"></textarea>
+            <div class="char-count"><span id="charCount">0</span> / 1000 characters</div>
+            <span class="err-msg" id="complaintErr">Please describe your complaint (minimum 20 characters).</span>
+          </div>
+
+          <div class="submit-btn-wrap">
+            <button type="button" class="btn btn-secondary" onclick="resetForm()">🔄 Reset</button>
+            <button type="submit" class="btn btn-primary" onclick="submitComplaint(event)">
+              🚀 Submit Complaint
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- SUCCESS SCREEN -->
+      <div class="success-screen" id="successScreen">
+        <div class="success-icon-wrap">✓</div>
+        <h3>Complaint Submitted!</h3>
+        <p>Your complaint has been received successfully. Our administration will review it within <strong>48 hours</strong>.</p>
+        <div class="success-details">
+          <dl id="successDetails"></dl>
+        </div>
+        <div class="success-actions">
+          <a href="index.html" class="btn btn-secondary">🏠 Go Home</a>
+          <button class="btn btn-primary" onclick="submitAnother()">📝 Submit Another</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p><strong>Student Complaint Management System</strong> &copy; 2025 — University Administration Portal</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

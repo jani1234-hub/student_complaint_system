@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel — Complaint System</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    main { flex: 1; }
+
+    /* ===== LOGIN PAGE ===== */
+    #loginPage {
+      background: linear-gradient(135deg, #EEF2FF 0%, #F0FDFF 100%);
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      min-height: calc(100vh - 68px);
+    }
+    .login-card { width: min(420px, 100%); padding: 2.75rem; }
+    .login-logo { text-align: center; margin-bottom: 2rem; }
+    .logo-big {
+      width: 64px; height: 64px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; color: white;
+      margin: 0 auto 1rem;
+      box-shadow: 0 8px 28px rgba(79,70,229,0.30);
+    }
+    .login-logo h2 {
+      font-family: var(--font-display);
+      font-weight: 800; font-size: 1.4rem; color: var(--text);
+    }
+    .login-logo p { color: var(--text-light); font-size: 0.88rem; margin-top: 0.3rem; }
+    .login-hint {
+      background: var(--primary-light);
+      border: 1px solid #C7D2FE;
+      border-radius: var(--radius-sm);
+      padding: 0.8rem 1rem;
+      font-size: 0.83rem;
+      color: var(--primary-dark);
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .pw-wrap { position: relative; }
+    .pw-wrap .form-control { padding-right: 2.8rem; }
+    .toggle-pw {
+      position: absolute; right: 0.85rem; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      font-size: 1rem; color: var(--text-muted);
+      padding: 0; line-height: 1;
+    }
+
+    /* ===== ADMIN DASHBOARD ===== */
+    #adminPage { display: none; flex: 1; flex-direction: column; }
+    #adminPage.visible { display: flex; }
+
+    .admin-topbar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .admin-topbar-left h2 {
+      font-family: var(--font-display);
+      font-weight: 800; font-size: 1.15rem; color: var(--text);
+    }
+    .admin-topbar-left p { font-size: 0.82rem; color: var(--text-light); }
+    .admin-user-badge {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--primary-light);
+      border-radius: 30px;
+      padding: 0.4rem 1rem 0.4rem 0.5rem;
+    }
+    .user-avatar {
+      width: 32px; height: 32px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: 0.85rem;
+    }
+    .admin-user-badge span { font-size: 0.88rem; font-weight: 600; color: var(--primary-dark); }
+
+    .admin-main { padding: 2rem; flex: 1; }
+    .admin-inner { max-width: 1200px; margin: 0 auto; }
+
+    /* Stats */
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .stat-icon {
+      width: 46px; height: 46px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .stat-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.6rem; font-weight: 800; color: var(--text); line-height: 1;
+    }
+    .stat-card p { font-size: 0.8rem; color: var(--text-light); margin-top: 3px; }
+
+    /* Toolbar */
+    .table-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .toolbar-left h3 {
+      font-family: var(--font-display);
+      font-weight: 700; font-size: 1.1rem;
+    }
+    .toolbar-left p { font-size: 0.82rem; color: var(--text-light); margin-top: 2px; }
+    .toolbar-right { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+    .filter-select {
+      padding: 0.5rem 2.2rem 0.5rem 0.9rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 0.87rem;
+      color: var(--text);
+      background: white;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.6rem center;
+      transition: var(--transition);
+    }
+    .filter-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+
+    .search-input-wrap { position: relative; }
+    .search-input-wrap input {
+      padding: 0.5rem 1rem 0.5rem 2.2rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 0.87rem;
+      color: var(--text);
+      background: white;
+      outline: none;
+      width: 200px;
+      transition: var(--transition);
+    }
+    .search-input-wrap input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+    .search-icon {
+      position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%);
+      color: var(--text-muted); font-size: 0.85rem; pointer-events: none;
+    }
+
+    /* Table card */
+    .table-card { overflow: hidden; }
+
+    /* Status select in table */
+    .status-select {
+      padding: 0.3rem 1.8rem 0.3rem 0.7rem;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      background-repeat: no-repeat;
+      background-position: right 0.4rem center;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      transition: var(--transition);
+    }
+    .status-select.pending  { background-color: #FEF3C7; color: #B45309; border-color: #FDE68A; }
+    .status-select.progress { background-color: #DBEAFE; color: #1D4ED8; border-color: #BFDBFE; }
+    .status-select.resolved { background-color: #D1FAE5; color: #065F46; border-color: #A7F3D0; }
+
+    .action-btns { display: flex; gap: 0.5rem; }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+    .empty-state .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .empty-state h4 { font-family: var(--font-display); font-weight: 700; margin-bottom: 0.5rem; }
+    .empty-state p { color: var(--text-light); font-size: 0.9rem; }
+
+    /* Notification toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      background: #1F2937;
+      color: white;
+      padding: 0.9rem 1.4rem;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      pointer-events: none;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* Delete confirm modal */
+    .del-name { font-weight: 700; color: #DC2626; }
+
+    @media (max-width: 768px) {
+      .admin-main { padding: 1.25rem; }
+      .admin-topbar { padding: 1rem; }
+      .toolbar-right { flex-wrap: wrap; }
+      .search-input-wrap input { width: 100%; }
+      .action-btns { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">📋</div>
+      Complaint System
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="complaint.html">Submit Complaint</a></li>
+      <li><a href="admin.html" class="btn-nav active">Admin Panel</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleNav()" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== LOGIN PAGE ===== -->
+<div id="loginPage">
+  <div class="card login-card">
+    <div class="login-logo">
+      <div class="logo-big">🔐</div>
+      <h2>Admin Login</h2>
+      <p>Authorized personnel only</p>
+    </div>
+    <div class="login-hint">
+      ℹ️ Demo credentials: <strong>&nbsp;admin</strong> / <strong>Admin@@@</strong>
+    </div>
+    <div id="loginAlert"></div>
+    <div class="form-group">
+      <label class="form-label" for="loginUser">Username <span class="req">*</span></label>
+      <input type="text" class="form-control" id="loginUser" placeholder="Enter username" />
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="loginPass">Password <span class="req">*</span></label>
+      <div class="pw-wrap">
+        <input type="password" class="form-control" id="loginPass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()" />
+        <button type="button" class="toggle-pw" onclick="togglePw()" id="pwEye">👁️</button>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:0.5rem" onclick="doLogin()">
+      🔓 Login to Dashboard
+    </button>
+  </div>
+</div>
+
+<!-- ===== ADMIN DASHBOARD ===== -->
+<div id="adminPage">
+
+  <!-- Top Bar -->
+  <div class="admin-topbar">
+    <div class="admin-topbar-left">
+      <h2>🛡️ Admin Dashboard</h2>
+      <p>Manage and resolve student complaints</p>
+    </div>
+    <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+      <div class="admin-user-badge">
+        <div class="user-avatar">A</div>
+        <span>Admin</span>
+      </div>
+      <button class="btn btn-sm btn-danger" onclick="doLogout()">🚪 Logout</button>
+    </div>
+  </div>
+
+  <div class="admin-main">
+    <div class="admin-inner">
+
+      <!-- Stats -->
+      <div class="admin-stats" id="adminStats"></div>
+
+      <!-- Table Toolbar -->
+      <div class="table-toolbar">
+        <div class="toolbar-left">
+          <h3>📋 Complaint Records</h3>
+          <p id="recordCount">Loading...</p>
+        </div>
+        <div class="toolbar-right">
+          <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Search complaints..." id="searchInput" oninput="renderTable()" />
+          </div>
+          <select class="filter-select" id="filterCategory" onchange="renderTable()">
+            <option value="">All Categories</option>
+            <option value="Department">Department</option>
+            <option value="Teacher">Teacher</option>
+            <option value="Administration">Administration</option>
+            <option value="Hostel">Hostel</option>
+          </select>
+          <select class="filter-select" id="filterStatus" onchange="renderTable()">
+            <option value="">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Resolved</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="card table-card">
+        <div class="table-wrap">
+          <table id="complaintsTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Student</th>
+                <th>Category</th>
+                <th>Target</th>
+                <th>Subject</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+          <div id="emptyState" class="empty-state hidden">
+            <div class="empty-icon">🔍</div>
+            <h4>No complaints found</h4>
+            <p>Try adjusting your filters or search query.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRMATION MODAL -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal">
+    <div style="font-size:2.5rem;text-align:center;margin-bottom:1rem">🗑️</div>
+    <h3 class="modal-title text-center">Delete Complaint?</h3>
+    <p class="modal-sub text-center">You are about to delete the complaint from <span class="del-name" id="delName"></span>. This action <strong>cannot be undone</strong>.</p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmDelete()">🗑️ Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<footer class="footer">
+  <p><strong>Student Complaint Management System</strong> &copy; 2025 — University Administration Portal</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

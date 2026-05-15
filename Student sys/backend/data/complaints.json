@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1bac9674-d042-449e-8aff-ed73042a821b",
+    "name": "Muhammad Jahanzaib Ramzan",
+    "email": "jahanzaibjani435@gmail.com",
+    "rollno": "cs-arid804",
+    "category": "Hostel",
+    "target": "Boys Hostel A",
+    "subject": "hi",
+    "complaint": "we have water supply problem",
+    "status": "Pending",
+    "date": "6 May 2026",
+    "createdAt": "2026-05-06T18:26:09.918Z",
+    "updatedAt": "2026-05-06T18:26:09.918Z"
+  }
+]
